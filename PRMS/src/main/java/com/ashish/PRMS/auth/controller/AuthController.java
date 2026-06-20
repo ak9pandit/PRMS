@@ -6,9 +6,11 @@ import com.ashish.PRMS.auth.dto.SetupOwnerRequest;
 import com.ashish.PRMS.auth.dto.SetupStatusResponse;
 import com.ashish.PRMS.auth.service.AuthService;
 import com.ashish.PRMS.security.JwtService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -23,6 +25,7 @@ public class AuthController {
 
     @Autowired
     JwtService jwtService;
+
 
     @PostMapping("/setup-owner")
     public ResponseEntity<String> setupOwner(@RequestBody SetupOwnerRequest setupOwnerRequest){
@@ -51,5 +54,10 @@ public class AuthController {
                 jwtService.isTokenExpired(token));
         return list;
 
+    }
+
+    @GetMapping("/owner/profile")
+    public String profile() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }
